@@ -1,0 +1,337 @@
+cat > /mnt/user-data/outputs/README_Windows_CLI_Basics.md << 'ENDOFFILE'
+# 🪟 Windows CLI Basics
+
+> **TryHackMe Room:** [tryhackme.com/room/windowsclibasics](https://tryhackme.com/room/windowsclibasics)
+> **Modul:** Operating Systems
+> **Səviyyə:** Başlanğıc
+
+---
+
+## Task 1 — Giriş (Introduction)
+
+Əvvəlki Linux CLI Basics roomunda Linux komanda sətrinə ilk addımlarını atdın. Bu gün isə yoluna davam edirsən — amma bu dəfə **Windows** tərəfində.
+
+Windows dünyada ən geniş istifadə olunan əməliyyat sistemlərindən biridir. Kibertəhlükəsizliklə maraqlanan biri kimi xüsusilə istifadəçi masaüstü və noutbuklarında tez-tez Windows maşınlarını araşdırmalı və problemlərini həll etməli olacaqsan.
+
+Bu roomda həm əvvəlki kimi hekayəyə əsaslanan, praktiki yanaşma ilə **Windows Command Prompt**-dan istifadə edərək faylları naviqasiya etməyi, məlumat axtarmağı və əsas sistem detallarını toplamağı öyrənəcəksən.
+
+### Windows Komanda Sətri (CMD) nədir?
+
+**Command Prompt** (CMD) — Windows əməliyyat sistemi ilə mətn əsaslı qarşılıqlı əlaqə alətidir. Qovluqlara klikləmək və menyuları açmaq əvəzinə, sistemə nə etmək istədiyini tam olaraq izah edən komandalar yazırsan — faylları siyahılamaq, qovluqlar arasında hərəkət etmək, sistem məlumatlarını yoxlamaq kimi. Sadə görünür, lakin güclü və geniş istifadə olunan bir vasitədir.
+
+### Öyrənmə Hədəfləri
+
+- Windows komanda sətrindən əminliklə istifadə etmək
+- Klikləmədən qovluqlarda naviqasiya etmək
+- Yalnız adını bildikdə faylları tapmaq
+- Terminal vasitəsilə faylları oxumaq
+- Əsas sistem və şəbəkə məlumatlarını toplamaq
+
+### Ssenari — 2-ci İş Günü
+
+İnternaturanın **ikinci günü** üçün işə gəlirsən. Müşfiqin qeydini tapırsan:
+
+> *"Salam! Əvvəlki günkü işin çox yaxşı idi. Bu gün Windows-da eyni şeyi edəcəyik. Sistem `task_brief.txt` adlı bir fayl var. Onu komanda sətri ilə tap və oxu. Uğurlar!"*
+
+Yenə özün başa vurmalısan. Hər addım nə etməyin lazım olduğunu sənə göstərəcək.
+
+---
+
+## Task 2 — Windows CLI: Faylları Naviqasiya Et və İlk Faylını Tap
+
+### Terminalın Qısa İzahı
+
+**Terminal** — Windows OS ilə qarşılıqlı əlaqə üçün mətn əsaslı interfeysdir. Pəncərələrə və qovluqlara klikləmək əvəzinə, kompütərə nə etmək istədiyini tam olaraq bildirir komandalar yazırsan.
+
+Kibertəhlükəsizlik mütəxəssisləri terminala üstünlük verir, çünki:
+- İkonlara klikləməkdən **daha sürətlidir**
+- **Daha çox nəzarət** verir
+- Bir çox təhlükəsizlik alətləri **yalnız terminalla** işləyir
+
+---
+
+### Addım 1 — "Haradayam?" → `cd`
+
+```cmd
+C:\Users\Administrator> cd
+C:\Users\Administrator
+```
+
+Windows-da arqumentsiz `cd` komandası Linux-da `pwd` kimi işləyir — cari qovluğun tam yolunu göstərir. CMD-ni açdıqda adətən `C:\Users\Administrator` (və ya cari istifadəçinin adı) qovluğuna düşürsən.
+
+> 🔁 **Linux ilə müqayisə:** Linux-da `pwd`, Windows-da `cd` (arqumentsiz)
+
+---
+
+### Addım 2 — "Ətrafımda Nə Var?" → `dir`
+
+```cmd
+C:\Users\Administrator> dir
+```
+
+`dir` cari qovluğun məzmununu — faylları və qovluqları — siyahıya salır. Standart olaraq yalnız görünən elementlər göstərilir.
+
+Çıxışda görünənlər:
+- Tarix və saat
+- `<DIR>` işarəsi ilə qovluqlar
+- Fayl ölçüsü (baytla) və fayl adları
+- Cəmi fayl sayı və boş disk sahəsi
+
+---
+
+### Addım 3 — Gizli Fayllar → `dir /a`
+
+```cmd
+C:\Users\Administrator> dir /a
+```
+
+Windows bəzi faylları və qovluqları **gizli** olaraq işarələyir — standart siyahıda görünmürlər. `/a` flag-i **bütün** elementləri, gizlinlər də daxil olmaqla, göstərir.
+
+> 💡 Gizli demək "gizli sirr" demək deyil — sadəcə Windows onları default olaraq gizlədir. Kibertəhlükəsizlik araşdırmalarında gizli fayllar çox vaxt vacib məlumat ehtiva edir.
+
+---
+
+### Addım 4 — Qovluqlar Arası Hərəkət → `cd <qovluq>`
+
+```cmd
+C:\Users\Administrator> cd Documents
+C:\Users\Administrator\Documents>
+```
+
+Bir qovluğa daxil olmaq üçün `cd <qovluq_adı>` komandası istifadə edilir.
+
+Bir qovluq geri qayıtmaq üçün:
+
+```cmd
+C:\Users\Administrator\Documents> cd ..
+C:\Users\Administrator>
+```
+
+| Komanda | Nə Edir |
+|---|---|
+| `cd Documents` | Documents qovluğuna daxil olur |
+| `cd ..` | Bir üst qovluğa qayıdır |
+| `cd \` | Kök qovluğa (`C:\`) qayıdır |
+| `cd C:\Users` | Tam yol ilə hər qovluğa keçid |
+
+---
+
+### Addım 5 — Faylı Sistemdə Tap → `dir /s`
+
+```cmd
+C:\Users\Administrator> dir /s task_brief.txt
+```
+
+`/s` flag-i Windowsa **bütün alt qovluqlarda** axtarış etməyi bildirir — cari qovluqdan başlayaraq. Fayl tapılarsa, **tam yolu** göstərilir.
+
+Bu, faylın harada olduğunu bilmədikdə ən faydalı vasitədir.
+
+> 🔁 **Linux ilə müqayisə:** Linux-da `find ~ -name fayl.txt`, Windows-da `dir /s fayl.txt`
+
+---
+
+### Addım 6 — Faylın Yerləşdiyi Qovluğa Get → `cd <yol>`
+
+```cmd
+C:\Users\Administrator> cd C:\Users\Administrator\Documents\hidden\archive
+C:\Users\Administrator\Documents\hidden\archive> dir
+```
+
+`dir /s` komandası tam yolu tapdıqdan sonra həmin yola `cd` ilə keçirsən və `dir` ilə faylın mövcudluğunu təsdiqləyirsən.
+
+---
+
+### Addım 7 — Faylı Oxu → `type`
+
+```cmd
+C:\Users\Administrator\Documents\hidden\archive> type task_brief.txt
+Sabah sistem məlumatlarını topla:
+- Kim kimi daxil oldun
+- Kompüterin adı
+- Windows versiyası
+- Şəbəkə məlumatları
+
+FLAG: TASK-BRIEF-FOUND
+```
+
+`type` — Windows-da faylın məzmununu terminal ekranında göstərir.
+
+> 🔁 **Linux ilə müqayisə:** Linux-da `cat`, Windows-da `type`
+
+---
+
+## Task 3 — Windows-da Sistem Məlumatlarını Topla (Gathering System Information)
+
+İndi faylları naviqasiya etməyi öyrəndinik. Növbəti addım isə **sistemin özündən suallar soruşmaqdır**. Kibertəhlükəsizlik və İT mütəxəssisləri bunu hər zaman edir. Problemi həll etməzdən və ya hadisəni araşdırmazddan əvvəl bilmək lazımdır:
+
+- Kim kimi daxil olmuşam?
+- Bu hansı maşındır?
+- Windows-un hansı versiyasıdır?
+- Bu maşın şəbəkəyə necə qoşulub?
+
+---
+
+### Addım 1 — "Kim kimi daxil olmuşam?" → `whoami`
+
+```cmd
+C:\Users\Administrator> whoami
+tryhatme\administrator
+```
+
+`whoami` — hal-hazırda daxil olduğun hesabın istifadəçi adını göstərir. Fərqli istifadəçilərin fərqli icazələri ola bilər, buna görə hansı hesabla işlədiyini bilmək vacibdir.
+
+Çıxış formatı: `<domain_adı>\<istifadəçi_adı>`
+
+> 🔐 Kibertəhlükəsizlik baxımından: Bir sistemə girişdən sonra ilk icra etdiyin komandalardan biri budur — hansı hüquqlarla işlədiyini anlamaq üçün.
+
+---
+
+### Addım 2 — "Bu kompüterin adı nədir?" → `hostname`
+
+```cmd
+C:\Users\Administrator> hostname
+TRYHATME-PC
+```
+
+Hər Windows maşınının adı var. İş yerlərində bu, şəbəkə sistemlərini müəyyənləşdirməyə kömək edir. `hostname` — kompüterin adını göstərir.
+
+---
+
+### Addım 3 — "Windows-un hansı versiyasıdır?" → `systeminfo`
+
+```cmd
+C:\Users\Administrator> systeminfo
+
+Host Name:                 TRYHATME-PC
+OS Name:                   Microsoft Windows Server 2019 Datacenter
+OS Version:                10.0.17763 N/A Build 17763
+OS Manufacturer:           Microsoft Corporation
+OS Configuration:          Standalone Server
+OS Build Type:             Multiprocessor Free
+Registered Owner:          Windows User
+System Type:               x64-based PC
+Total Physical Memory:     4,096 MB
+...
+```
+
+`systeminfo` çox məlumat çıxarır. Diqqət etməli olduğun əsas hissələr:
+
+| Sahə | Nə Göstərir |
+|---|---|
+| **OS Name** | Windows-un adı (Windows Server 2019, Windows 11 və s.) |
+| **OS Version** | Dəqiq versiya nömrəsi |
+| **System Type** | 32-bit mi, 64-bit mi (`x64-based PC`) |
+| **Total Physical Memory** | Quraşdırılmış RAM miqdarı |
+| **Host Name** | Kompüterin adı |
+| **Domain** | Kompüterin qoşulduğu domain (varsa) |
+
+---
+
+### Addım 4 — "Şəbəkəyə necə qoşulub?" → `ipconfig`
+
+```cmd
+C:\Users\Administrator> ipconfig
+
+Windows IP Configuration
+
+Ethernet adapter Ethernet:
+   Connection-specific DNS Suffix  :
+   IPv4 Address. . . . . . . . . . : 10.10.X.X
+   Subnet Mask . . . . . . . . . . : 255.255.0.0
+   Default Gateway . . . . . . . . : 10.10.0.1
+```
+
+`ipconfig` maşının şəbəkə konfiqurasiyasını göstərir.
+
+Diqqət etməli olduğun sahələr:
+
+| Sahə | Məna |
+|---|---|
+| **IPv4 Address** | Maşının IP ünvanı |
+| **Subnet Mask** | Şəbəkə maskası |
+| **Default Gateway** | Router-in IP ünvanı (şəbəkəyə çıxış nöqtəsi) |
+
+> 💡 Bu məlumatlar analitiklərə maşının şəbəkəyə necə qoşulduğunu anlamağa kömək edir.
+
+---
+
+## Task 4 — Nəticə (Conclusion)
+
+Bu roomun sonuna çatdın. Windows Command Prompt ilə qarşılıqlı əlaqə qurmağı öyrəndin:
+
+- Faylları və qovluqları klikləmədən naviqasiya etdin
+- Harada olduğunu bilmədikdə faylları tapdın
+- Gizli faylları və qovluqları aşkar etdin
+- Faylların məzmununu birbaşa terminaldan oxudun
+- Əsas sistem və şəbəkə məlumatlarını topladın
+
+### Niyə Vacibdir?
+
+Gerçək mühitlərdə:
+- Hər şey qrafik interfeysdə görünmür
+- Fayllar gizlənə və ya sistemin dərinliyinə basdırıla bilər
+- Analitiklər menyuları klikləmədən tez cavablar tapmalıdır
+- Komanda sətri alətləri daha sürətlidir, daha dəqiqdir və avtomatlaşdırmaq daha asandır
+
+Windows komanda sətri ilə rahat olmaq sənə sistem üzərində daha çox nəzarət və daha yaxşı görünürlük verir.
+
+---
+
+## 📋 Öyrənilən Komandalar — Xülasə Cədvəli
+
+| Komanda | Nə Edir | Linux Müqabili |
+|---|---|---|
+| `cd` (arqumentsiz) | Cari qovluğu göstərir | `pwd` |
+| `cd <qovluq>` | Qovluq dəyişir | `cd <qovluq>` |
+| `cd ..` | Bir üst qovluğa qayıdır | `cd ..` |
+| `cd \` | Kök qovluğa qayıdır | `cd /` |
+| `dir` | Cari qovluğun məzmununu siyahıya salır | `ls` |
+| `dir /a` | Gizli fayllar da daxil olmaqla siyahı | `ls -al` |
+| `dir /s <fayl>` | Bütün alt qovluqlarda fayl axtarır | `find ~ -name <fayl>` |
+| `type <fayl>` | Faylın məzmununu göstərir | `cat <fayl>` |
+| `whoami` | Cari istifadəçi adını göstərir | `whoami` |
+| `hostname` | Kompüterin adını göstərir | `hostname` |
+| `systeminfo` | Sistem məlumatlarını göstərir | `uname -a` |
+| `ipconfig` | Şəbəkə konfiqurasiyasını göstərir | `ifconfig` / `ip a` |
+
+---
+
+## 🔁 Linux vs Windows CLI — Müqayisə Cədvəli
+
+| Əməliyyat | Linux | Windows |
+|---|---|---|
+| Cari qovluğu göstər | `pwd` | `cd` |
+| Faylları siyahıla | `ls` | `dir` |
+| Gizlin faylları göstər | `ls -al` | `dir /a` |
+| Qovluğu dəyiş | `cd <qovluq>` | `cd <qovluq>` |
+| Fayl axtar | `find ~ -name <fayl>` | `dir /s <fayl>` |
+| Faylı oxu | `cat <fayl>` | `type <fayl>` |
+| Cari istifadəçini göstər | `whoami` | `whoami` |
+| OS məlumatı | `uname -a` | `systeminfo` |
+| Şəbəkə məlumatı | `ip a` / `ifconfig` | `ipconfig` |
+
+---
+
+## 💡 Windows Fayl Sistemi — Əsas Yollar
+
+```
+C:\                          → Kök (root) qovluğu
+C:\Users\                    → Bütün istifadəçilərin ev qovluqları
+C:\Users\Administrator\      → Administrator istifadəçisinin ev qovluğu
+C:\Windows\                  → Windows sistem faylları
+C:\Program Files\            → Quraşdırılmış proqramlar (64-bit)
+C:\Program Files (x86)\      → Quraşdırılmış proqramlar (32-bit)
+```
+
+---
+
+## 🔗 Növbəti Addımlar
+
+- Linux Users & Groups
+- Windows & Linux Permissions
+- Networking Basics
+
+---
+
+*📅 TryHackMe — Operating Systems Modulu | Windows CLI Basics*
+ENDOFFILE
