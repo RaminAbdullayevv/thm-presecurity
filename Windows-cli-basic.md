@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/README_Windows_CLI_Basics.md << 'ENDOFFILE'
 # 🪟 Windows CLI Basics
 
 > **TryHackMe Room:** [tryhackme.com/room/windowsclibasics](https://tryhackme.com/room/windowsclibasics)
